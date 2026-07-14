@@ -12,6 +12,7 @@ import streamlit as st
 
 
 DB_PATH = Path(__file__).with_name("messages.db")
+LOGO_PATH = Path(__file__).with_name("T.W.M.png")
 SITE_NAME = "Trace.me"
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH", "")
@@ -1149,26 +1150,36 @@ def apply_theme() -> None:
 
 def render_site_logo(container) -> None:
     container.markdown(
-        f"""
+        """
         <div style="
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: linear-gradient(145deg, #ffffff 0%, #e7f4ff 100%);
             border: 1px solid #cfe6f9;
             border-radius: 12px;
             padding: 10px 12px;
-            text-align: center;
         ">
-            <div style="font-size: 24px; line-height: 1;">💬</div>
-            <div style="font-size: 16px; font-weight: 700; color: #1f4f73; margin-top: 4px;">Thinker Board</div>
-            <div style="font-size: 12px; color: #4a6c86; margin-top: 2px;">{t("site_logo_subtitle")}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
+    if LOGO_PATH.exists():
+        container.image(str(LOGO_PATH), use_container_width=True)
+    else:
+        container.markdown(
+            '<div style="text-align:center; font-size: 24px; line-height: 1;">💬</div>',
+            unsafe_allow_html=True,
+        )
+
+    container.markdown(
+        f'<div style="text-align:center; font-size: 12px; color: #4a6c86; margin-top: 4px; margin-bottom: 10px;">{t("site_logo_subtitle")}</div>',
+        unsafe_allow_html=True,
+    )
+
 
 def main() -> None:
-    st.set_page_config(page_title=SITE_NAME, page_icon="🗂️", layout="wide")
+    page_icon = str(LOGO_PATH) if LOGO_PATH.exists() else "🗂️"
+    st.set_page_config(page_title=SITE_NAME, page_icon=page_icon, layout="wide")
     init_db()
     apply_theme()
     ensure_auth_state()
