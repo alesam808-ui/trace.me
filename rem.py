@@ -481,6 +481,20 @@ def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
+def get_runtime_config(key: str, default: str = "") -> str:
+    value = os.getenv(key, "")
+    if value:
+        return value
+
+    secrets_file = Path(".streamlit/secrets.toml")
+    if secrets_file.exists():
+        secret_value = st.secrets.get(key, "")
+        if isinstance(secret_value, str) and secret_value:
+            return secret_value
+
+    return default
+
+
 def create_user(username: str, first_name: str, last_name: str, password: str) -> None:
     now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     with get_connection() as conn:
@@ -572,12 +586,18 @@ def charge_publish_fee(username: str, amount_eur: float) -> bool:
 
 
 def authenticate_user(username: str, password: str) -> bool:
+    admin_password_hash = get_runtime_config("ADMIN_PASSWORD_HASH", ADMIN_PASSWORD_HASH)
+    admin_password_plain = get_runtime_config("ADMIN_PASSWORD", "")
+
     if (
         username.lower() == ADMIN_USERNAME.lower()
-        and ADMIN_PASSWORD_HASH
-        and hash_password(password) == ADMIN_PASSWORD_HASH
+        and admin_password_hash
+        and hash_password(password) == admin_password_hash
     ):
         return True
+
+    if username.lower() == ADMIN_USERNAME.lower() and admin_password_plain:
+        return password == admin_password_plain
 
     with get_connection() as conn:
         row = conn.execute(
