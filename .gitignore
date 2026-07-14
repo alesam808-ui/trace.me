@@ -1,0 +1,14 @@
+.venv/
+kivy_env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode/
+messages.db
+startup.log
+build/
+dist/
+*.spec
+*.toc
+*.pyz
+Windows 10.iso
