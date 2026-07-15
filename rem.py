@@ -962,7 +962,7 @@ def render_post_card(row: pd.Series) -> None:
     display_name = f"{first_name} {last_name}".strip() or row["username"]
     st.markdown(
         f"""
-        <div style="border:1px solid #dddddd; border-radius:10px; padding:14px; margin-bottom:12px;">
+            <div style="border:1px solid #dddddd; border-radius:10px; padding:14px; margin-bottom:12px; width:100%; box-sizing:border-box; overflow-wrap:anywhere; word-break:break-word;">
             <div style="font-size:12px; color:#666;">#{row['id']} - {row['created_at']}</div>
             <div style="margin-top:4px; font-weight:700; font-size:18px;">{row['title']}</div>
             <div style="margin-top:2px; font-size:14px; color:#444;">{t('topic_by', topic=topic_label(row['topic']), username=display_name)}</div>
@@ -1119,11 +1119,25 @@ def apply_theme() -> None:
     st.markdown(
         """
         <style>
+            * {
+                box-sizing: border-box;
+            }
             .stApp {
                 background: linear-gradient(160deg, #dff1ff 0%, #eef8ff 45%, #ffffff 100%);
             }
             [data-testid="stSidebar"] {
                 background: #f4fbff;
+            }
+            [data-testid="stAppViewContainer"] {
+                overflow-x: hidden;
+            }
+            .block-container {
+                width: 100%;
+                max-width: 900px;
+                padding-top: 1.4rem;
+                padding-right: 1rem;
+                padding-left: 1rem;
+                padding-bottom: 2rem;
             }
             div[data-testid="stMetric"] {
                 background: #ffffff;
@@ -1141,6 +1155,35 @@ def apply_theme() -> None:
             div[role="dialog"] > div {
                 width: min(760px, 92vw);
                 margin: 0 auto;
+            }
+            textarea, input, select {
+                font-size: 16px !important;
+            }
+            @media (max-width: 768px) {
+                .block-container {
+                    max-width: 100%;
+                    padding-top: 1rem;
+                    padding-right: 0.8rem;
+                    padding-left: 0.8rem;
+                    padding-bottom: 1.25rem;
+                }
+                h1 {
+                    font-size: 1.7rem !important;
+                }
+                h2, h3 {
+                    font-size: 1.2rem !important;
+                }
+                div[role="dialog"] > div {
+                    width: 96vw;
+                }
+                .stButton > button, .stDownloadButton > button {
+                    width: 100%;
+                    min-height: 2.75rem;
+                }
+                [data-testid="stMarkdownContainer"], p, label, .stCaption {
+                    overflow-wrap: anywhere;
+                    word-break: break-word;
+                }
             }
         </style>
         """,
@@ -1179,7 +1222,7 @@ def render_site_logo(container) -> None:
 
 def main() -> None:
     page_icon = str(LOGO_PATH) if LOGO_PATH.exists() else "🗂️"
-    st.set_page_config(page_title=SITE_NAME, page_icon=page_icon, layout="wide")
+    st.set_page_config(page_title=SITE_NAME, page_icon=page_icon, layout="centered")
     init_db()
     apply_theme()
     ensure_auth_state()
