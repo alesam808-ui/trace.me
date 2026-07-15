@@ -883,14 +883,14 @@ def ensure_auth_state() -> None:
 @st.dialog(" ")
 def show_welcome_popup() -> None:
     st.markdown(
-        f'<div style="text-align:center; font-size:1.35rem; font-weight:700; color:#1f4f73; margin-bottom:6px;">{t("welcome_title")}</div>',
+        f'<div style="text-align:center; font-size:1.35rem; font-weight:700; color:#173d5a; margin-bottom:6px;">{t("welcome_title")}</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
         f"""
         <div style="
-            background: linear-gradient(155deg, #e2f3ff 0%, #ffffff 70%);
-            border: 1px solid #cfe6f9;
+            background: linear-gradient(155deg, #cfe9ff 0%, #f7fbff 72%);
+            border: 1px solid #b7d8f4;
             border-radius: 14px;
             padding: 20px;
             margin-top: 6px;
@@ -898,7 +898,7 @@ def show_welcome_popup() -> None:
             text-align: center;
             font-size: 1.15rem;
             line-height: 1.5;
-            color: #1f4f73;
+            color: #173d5a;
         ">
             {t("welcome_message")}
         </div>
@@ -963,10 +963,10 @@ def render_post_card(row: pd.Series) -> None:
     st.markdown(
         f"""
             <div style="border:1px solid #dddddd; border-radius:10px; padding:14px; margin-bottom:12px; width:100%; box-sizing:border-box; overflow-wrap:anywhere; word-break:break-word;">
-            <div style="font-size:12px; color:#666;">#{row['id']} - {row['created_at']}</div>
-            <div style="margin-top:4px; font-weight:700; font-size:18px;">{row['title']}</div>
-            <div style="margin-top:2px; font-size:14px; color:#444;">{t('topic_by', topic=topic_label(row['topic']), username=display_name)}</div>
-            <div style="margin-top:10px; font-size:15px; white-space:pre-wrap;">{row['message']}</div>
+            <div style="font-size:12px; color:#4f6780;">#{row['id']} - {row['created_at']}</div>
+            <div style="margin-top:4px; font-weight:700; font-size:18px; color:#173d5a;">{row['title']}</div>
+            <div style="margin-top:2px; font-size:14px; color:#2c4e69;">{t('topic_by', topic=topic_label(row['topic']), username=display_name)}</div>
+            <div style="margin-top:10px; font-size:15px; color:#22384d; white-space:pre-wrap;">{row['message']}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1086,11 +1086,11 @@ def render_private_messages_page(current_username: str) -> None:
             for _, row in inbox_df.iterrows():
                 st.markdown(
                     f"""
-                    <div style="border:1px solid #d7e9f7; border-radius:10px; padding:12px; margin-bottom:10px; background:#ffffff;">
-                        <div style="font-size:12px; color:#666;">{row['created_at']}</div>
-                        <div style="margin-top:4px; font-weight:700; font-size:16px;">{row['title']}</div>
-                        <div style="margin-top:2px; font-size:14px; color:#444;">{t('from')}: <b>{row['sender_username']}</b></div>
-                        <div style="margin-top:8px; font-size:15px; white-space:pre-wrap;">{row['message']}</div>
+                    <div style="border:1px solid #bfdcf2; border-radius:10px; padding:12px; margin-bottom:10px; background:#ffffff;">
+                        <div style="font-size:12px; color:#4f6780;">{row['created_at']}</div>
+                        <div style="margin-top:4px; font-weight:700; font-size:16px; color:#173d5a;">{row['title']}</div>
+                        <div style="margin-top:2px; font-size:14px; color:#2c4e69;">{t('from')}: <b>{row['sender_username']}</b></div>
+                        <div style="margin-top:8px; font-size:15px; color:#22384d; white-space:pre-wrap;">{row['message']}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1104,11 +1104,11 @@ def render_private_messages_page(current_username: str) -> None:
             for _, row in sent_df.iterrows():
                 st.markdown(
                     f"""
-                    <div style="border:1px solid #d7e9f7; border-radius:10px; padding:12px; margin-bottom:10px; background:#ffffff;">
-                        <div style="font-size:12px; color:#666;">{row['created_at']}</div>
-                        <div style="margin-top:4px; font-weight:700; font-size:16px;">{row['title']}</div>
-                        <div style="margin-top:2px; font-size:14px; color:#444;">{t('to')}: <b>{row['recipient_username']}</b></div>
-                        <div style="margin-top:8px; font-size:15px; white-space:pre-wrap;">{row['message']}</div>
+                    <div style="border:1px solid #bfdcf2; border-radius:10px; padding:12px; margin-bottom:10px; background:#ffffff;">
+                        <div style="font-size:12px; color:#4f6780;">{row['created_at']}</div>
+                        <div style="margin-top:4px; font-weight:700; font-size:16px; color:#173d5a;">{row['title']}</div>
+                        <div style="margin-top:2px; font-size:14px; color:#2c4e69;">{t('to')}: <b>{row['recipient_username']}</b></div>
+                        <div style="margin-top:8px; font-size:15px; color:#22384d; white-space:pre-wrap;">{row['message']}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1119,14 +1119,39 @@ def apply_theme() -> None:
     st.markdown(
         """
         <style>
+            :root {
+                --trace-bg-start: #cbe7ff;
+                --trace-bg-mid: #dfefff;
+                --trace-sidebar-bg: #e9f6ff;
+                --trace-text-strong: #173d5a;
+                --trace-text-main: #22384d;
+                --trace-text-soft: #46627d;
+                --trace-border: #bcd8ef;
+            }
             * {
                 box-sizing: border-box;
             }
             .stApp {
-                background: linear-gradient(160deg, #dff1ff 0%, #eef8ff 45%, #ffffff 100%);
+                background: linear-gradient(160deg, var(--trace-bg-start) 0%, var(--trace-bg-mid) 48%, #ffffff 100%);
+                color: var(--trace-text-main);
             }
             [data-testid="stSidebar"] {
-                background: #f4fbff;
+                background: var(--trace-sidebar-bg);
+            }
+            [data-testid="stSidebar"] * {
+                color: var(--trace-text-main);
+            }
+            [data-testid="stSidebar"] label,
+            [data-testid="stSidebar"] .stRadio label,
+            [data-testid="stSidebar"] [role="radiogroup"] label,
+            [data-testid="stSidebar"] [data-baseweb="radio"] label,
+            [data-testid="stSidebar"] [data-baseweb="radio"] div {
+                color: var(--trace-text-strong) !important;
+            }
+            [data-testid="stSidebar"] [data-baseweb="radio"] input + div,
+            [data-testid="stSidebar"] [data-baseweb="select"] *,
+            [data-testid="stSidebar"] .stSelectbox label {
+                color: var(--trace-text-strong) !important;
             }
             [data-testid="stAppViewContainer"] {
                 overflow-x: hidden;
@@ -1141,9 +1166,12 @@ def apply_theme() -> None:
             }
             div[data-testid="stMetric"] {
                 background: #ffffff;
-                border: 1px solid #d7e9f7;
+                border: 1px solid var(--trace-border);
                 border-radius: 10px;
                 padding: 8px;
+            }
+            h1, h2, h3, label, .stMarkdown, [data-testid="stMarkdownContainer"], p {
+                color: var(--trace-text-main);
             }
             div[role="dialog"] {
                 position: fixed !important;
@@ -1160,6 +1188,15 @@ def apply_theme() -> None:
                 font-size: 16px !important;
             }
             @media (max-width: 768px) {
+                [data-testid="stSidebar"] {
+                    background: var(--trace-sidebar-bg) !important;
+                }
+                [data-testid="stSidebar"] [data-baseweb="radio"] label,
+                [data-testid="stSidebar"] [data-baseweb="radio"] div,
+                [data-testid="stSidebarNav"] *,
+                [data-testid="stSidebarUserContent"] * {
+                    color: var(--trace-text-strong) !important;
+                }
                 .block-container {
                     max-width: 100%;
                     padding-top: 1rem;
@@ -1215,7 +1252,7 @@ def render_site_logo(container) -> None:
         )
 
     container.markdown(
-        f'<div style="text-align:center; font-size: 12px; color: #4a6c86; margin-top: 4px; margin-bottom: 10px;">{t("site_logo_subtitle")}</div>',
+        f'<div style="text-align:center; font-size: 12px; color: #35566f; margin-top: 4px; margin-bottom: 10px;">{t("site_logo_subtitle")}</div>',
         unsafe_allow_html=True,
     )
 
@@ -1228,7 +1265,7 @@ def main() -> None:
     ensure_auth_state()
 
     st.sidebar.markdown(
-        f'<div style="font-size:1.1rem; font-weight:700; color:#1f4f73; margin-top:2px; margin-bottom:8px;">{SITE_NAME}</div>',
+        f'<div style="font-size:1.1rem; font-weight:700; color:#173d5a; margin-top:2px; margin-bottom:8px;">{SITE_NAME}</div>',
         unsafe_allow_html=True,
     )
 
@@ -1249,7 +1286,7 @@ def main() -> None:
 
     st.title(t("app_title"))
     st.markdown(
-        f'<div style="font-size: 1.2rem; font-weight: 600; color: #1f4f73; margin-bottom: 0.5rem;">{t("slogan")}</div>',
+        f'<div style="font-size: 1.2rem; font-weight: 600; color: #173d5a; margin-bottom: 0.5rem;">{t("slogan")}</div>',
         unsafe_allow_html=True,
     )
 
